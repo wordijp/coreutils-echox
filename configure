@@ -585,7 +585,6 @@ PACKAGE_STRING='GNU coreutils 8.25'
 PACKAGE_BUGREPORT='bug-coreutils@gnu.org'
 PACKAGE_URL='http://www.gnu.org/software/coreutils/'
 
-ac_unique_file="src/ls.c"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>
@@ -665,7 +664,6 @@ single_binary_deps
 single_binary_libs
 single_binary_progs
 LIB_GMP
-LIB_NVPAIR
 SINGLE_BINARY_FALSE
 SINGLE_BINARY_TRUE
 GNULIB_TEST_WARN_CFLAGS
@@ -4010,7 +4008,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-
+#AC_CONFIG_SRCDIR([src/ls.c])
 
 ac_aux_dir=
 for ac_dir in build-aux "$srcdir"/build-aux; do
@@ -61969,40 +61967,10 @@ fi
 
 
 optional_bin_progs=
-for ac_func in chroot
-do :
-  ac_fn_c_check_func "$LINENO" "chroot" "ac_cv_func_chroot"
-if test "x$ac_cv_func_chroot" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_CHROOT 1
-_ACEOF
- {
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=chroot
-  else
-    optional_bin_progs="$optional_bin_progs chroot"
-  fi
-}
-fi
-done
-
-for ac_func in gethostid
-do :
-  ac_fn_c_check_func "$LINENO" "gethostid" "ac_cv_func_gethostid"
-if test "x$ac_cv_func_gethostid" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_GETHOSTID 1
-_ACEOF
- {
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=hostid
-  else
-    optional_bin_progs="$optional_bin_progs hostid"
-  fi
-}
-fi
-done
-
+#AC_CHECK_FUNCS([chroot],
+#        gl_ADD_PROG([optional_bin_progs], [chroot]))
+#AC_CHECK_FUNCS([gethostid],
+#        gl_ADD_PROG([optional_bin_progs], [hostid]))
 
 
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether use of struct winsize requires sys/ptem.h" >&5
@@ -62125,143 +62093,26 @@ $as_echo "#define LOCALTIME_CACHE 1" >>confdefs.h
 fi
 
 # Assume that if getattrat exists, it's compatible with Solaris 11.
-for ac_func in getattrat
-do :
-  ac_fn_c_check_func "$LINENO" "getattrat" "ac_cv_func_getattrat"
-if test "x$ac_cv_func_getattrat" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_GETATTRAT 1
-_ACEOF
-
-fi
-done
-
-if test $ac_cv_func_getattrat = yes; then
-  LIB_NVPAIR=-lnvpair
-
-fi
+#AC_CHECK_FUNCS([getattrat])
+#if test $ac_cv_func_getattrat = yes; then
+#  LIB_NVPAIR=-lnvpair
+#  AC_SUBST([LIB_NVPAIR])
+#fi
 
 # SCO-ODT-3.0 is reported to need -los to link programs using initgroups
-for ac_func in initgroups
-do :
-  ac_fn_c_check_func "$LINENO" "initgroups" "ac_cv_func_initgroups"
-if test "x$ac_cv_func_initgroups" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_INITGROUPS 1
-_ACEOF
+#AC_CHECK_FUNCS([initgroups])
+#if test $ac_cv_func_initgroups = no; then
+#  AC_CHECK_LIB([os], [initgroups])
+#fi
 
-fi
-done
-
-if test $ac_cv_func_initgroups = no; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for initgroups in -los" >&5
-$as_echo_n "checking for initgroups in -los... " >&6; }
-if ${ac_cv_lib_os_initgroups+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-los  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char initgroups ();
-int
-main ()
-{
-return initgroups ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_os_initgroups=yes
-else
-  ac_cv_lib_os_initgroups=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_os_initgroups" >&5
-$as_echo "$ac_cv_lib_os_initgroups" >&6; }
-if test "x$ac_cv_lib_os_initgroups" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBOS 1
-_ACEOF
-
-  LIBS="-los $LIBS"
-
-fi
-
-fi
-
-for ac_func in syslog
-do :
-  ac_fn_c_check_func "$LINENO" "syslog" "ac_cv_func_syslog"
-if test "x$ac_cv_func_syslog" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_SYSLOG 1
-_ACEOF
-
-fi
-done
-
-if test $ac_cv_func_syslog = no; then
-  # syslog is not in the default libraries.  See if it's in some other.
-  for lib in bsd socket inet; do
-    as_ac_Lib=`$as_echo "ac_cv_lib_$lib''_syslog" | $as_tr_sh`
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for syslog in -l$lib" >&5
-$as_echo_n "checking for syslog in -l$lib... " >&6; }
-if eval \${$as_ac_Lib+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-l$lib  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char syslog ();
-int
-main ()
-{
-return syslog ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  eval "$as_ac_Lib=yes"
-else
-  eval "$as_ac_Lib=no"
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-eval ac_res=\$$as_ac_Lib
-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-$as_echo "$ac_res" >&6; }
-if eval test \"x\$"$as_ac_Lib"\" = x"yes"; then :
-
-$as_echo "#define HAVE_SYSLOG 1" >>confdefs.h
-
-      LIBS="$LIBS -l$lib"; break
-fi
-
-  done
-fi
+#AC_CHECK_FUNCS([syslog])
+#if test $ac_cv_func_syslog = no; then
+#  # syslog is not in the default libraries.  See if it's in some other.
+#  for lib in bsd socket inet; do
+#    AC_CHECK_LIB([$lib], [syslog], [AC_DEFINE([HAVE_SYSLOG], [1], [FIXME])
+#      LIBS="$LIBS -l$lib"; break])
+#  done
+#fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for 3-argument setpriority function" >&5
 $as_echo_n "checking for 3-argument setpriority function... " >&6; }
@@ -62291,56 +62142,22 @@ rm -f core conftest.err conftest.$ac_objext \
 fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $utils_cv_func_setpriority" >&5
 $as_echo "$utils_cv_func_setpriority" >&6; }
-if test $utils_cv_func_setpriority = no; then
-  for ac_func in nice
-do :
-  ac_fn_c_check_func "$LINENO" "nice" "ac_cv_func_nice"
-if test "x$ac_cv_func_nice" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_NICE 1
-_ACEOF
-
-fi
-done
-
-fi
-case $utils_cv_func_setpriority,$ac_cv_func_nice in
-*yes*)
-  {
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=nice
-  else
-    optional_bin_progs="$optional_bin_progs nice"
-  fi
-}
-esac
+#if test $utils_cv_func_setpriority = no; then
+#  AC_CHECK_FUNCS([nice])
+#fi
+#case $utils_cv_func_setpriority,$ac_cv_func_nice in
+#*yes*)
+#  gl_ADD_PROG([optional_bin_progs], [nice])
+#esac
 
 
 
 
-  if test $ac_cv_header_utmp_h = yes || test $ac_cv_header_utmpx_h = yes; then
-    {
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=who
-  else
-    optional_bin_progs="$optional_bin_progs who"
-  fi
-}
-    {
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=users
-  else
-    optional_bin_progs="$optional_bin_progs users"
-  fi
-}
-    {
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=pinky
-  else
-    optional_bin_progs="$optional_bin_progs pinky"
-  fi
-}
-  fi
+#  if test $ac_cv_header_utmp_h = yes || test $ac_cv_header_utmpx_h = yes; then
+#    gl_ADD_PROG([optional_bin_progs], [who])
+#    gl_ADD_PROG([optional_bin_progs], [users])
+#    gl_ADD_PROG([optional_bin_progs], [pinky])
+#  fi
 
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking ut_host in struct utmp" >&5
@@ -62421,96 +62238,7 @@ $as_echo "#define HAVE_UT_HOST 1" >>confdefs.h
   fi
 fi
 
-
-  for ac_func in sysctl
-do :
-  ac_fn_c_check_func "$LINENO" "sysctl" "ac_cv_func_sysctl"
-if test "x$ac_cv_func_sysctl" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_SYSCTL 1
-_ACEOF
-
-fi
-done
-
-
-  for ac_header in sys/sysctl.h
-do :
-  ac_fn_c_check_header_compile "$LINENO" "sys/sysctl.h" "ac_cv_header_sys_sysctl_h" "$ac_includes_default
-     #if HAVE_SYS_PARAM_H
-       #include <sys/param.h>
-      #endif
-"
-if test "x$ac_cv_header_sys_sysctl_h" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_SYS_SYSCTL_H 1
-_ACEOF
-
-fi
-
-done
-
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether we can get the system boot time" >&5
-$as_echo_n "checking whether we can get the system boot time... " >&6; }
-if ${gnulib_cv_have_boot_time+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-$ac_includes_default
-#if HAVE_SYSCTL && HAVE_SYS_SYSCTL_H
-# if HAVE_SYS_PARAM_H
-#  include <sys/param.h> /* needed for OpenBSD 3.0 */
-# endif
-# include <sys/sysctl.h>
-#endif
-#if HAVE_UTMPX_H
-# include <utmpx.h>
-#elif HAVE_UTMP_H
-# include <utmp.h>
-#endif
-#if HAVE_OS_H
-# include <OS.h>
-#endif
-
-int
-main ()
-{
-
-#if (defined BOOT_TIME                              \
-     || (defined CTL_KERN && defined KERN_BOOTTIME) \
-     || HAVE_OS_H)
-/* your system *does* have the infrastructure to determine boot time */
-#else
-please_tell_us_how_to_determine_boot_time_on_your_system
-#endif
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  gnulib_cv_have_boot_time=yes
-else
-  gnulib_cv_have_boot_time=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gnulib_cv_have_boot_time" >&5
-$as_echo "$gnulib_cv_have_boot_time" >&6; }
-  if test $gnulib_cv_have_boot_time = yes; then :
-  {
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=uptime
-  else
-    optional_bin_progs="$optional_bin_progs uptime"
-  fi
-}
-fi
-
+#GNULIB_BOOT_TIME([gl_ADD_PROG([optional_bin_progs], [uptime])])
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking POSIX termios" >&5
 $as_echo_n "checking POSIX termios... " >&6; }
@@ -62580,13 +62308,7 @@ $as_echo "#define GWINSZ_IN_SYS_IOCTL 1" >>confdefs.h
 
 
 if test $ac_cv_sys_posix_termios = yes; then
-  {
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=stty
-  else
-    optional_bin_progs="$optional_bin_progs stty"
-  fi
-}
+#  gl_ADD_PROG([optional_bin_progs], [stty])
 
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether termios.h needs _XOPEN_SOURCE" >&5
 $as_echo_n "checking whether termios.h needs _XOPEN_SOURCE... " >&6; }
@@ -62959,15 +62681,9 @@ $as_echo "$as_me: WARNING: GNU coreutils will be built without GMP support." >&2
 
 
 # Build df only if there's a point to it.
-if test $gl_cv_list_mounted_fs = yes && test $gl_cv_fs_space = yes; then
-  {
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=df
-  else
-    optional_bin_progs="$optional_bin_progs df"
-  fi
-}
-fi
+#if test $gl_cv_list_mounted_fs = yes && test $gl_cv_fs_space = yes; then
+#  gl_ADD_PROG([optional_bin_progs], [df])
+#fi
 
 # Build stdbuf only if supported
 ac_save_CFLAGS=$CFLAGS
@@ -63098,660 +62814,9 @@ LDFLAGS=$ac_save_LDFLAGS
 
 {
   if test -z "$optional_bin_progs"; then
-    optional_bin_progs=[
+    optional_bin_progs=echox
   else
-    optional_bin_progs="$optional_bin_progs ["
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=base64
-  else
-    optional_bin_progs="$optional_bin_progs base64"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=base32
-  else
-    optional_bin_progs="$optional_bin_progs base32"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=basename
-  else
-    optional_bin_progs="$optional_bin_progs basename"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=cat
-  else
-    optional_bin_progs="$optional_bin_progs cat"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=chcon
-  else
-    optional_bin_progs="$optional_bin_progs chcon"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=chgrp
-  else
-    optional_bin_progs="$optional_bin_progs chgrp"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=chmod
-  else
-    optional_bin_progs="$optional_bin_progs chmod"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=chown
-  else
-    optional_bin_progs="$optional_bin_progs chown"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=cksum
-  else
-    optional_bin_progs="$optional_bin_progs cksum"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=comm
-  else
-    optional_bin_progs="$optional_bin_progs comm"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=cp
-  else
-    optional_bin_progs="$optional_bin_progs cp"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=csplit
-  else
-    optional_bin_progs="$optional_bin_progs csplit"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=cut
-  else
-    optional_bin_progs="$optional_bin_progs cut"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=date
-  else
-    optional_bin_progs="$optional_bin_progs date"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=dd
-  else
-    optional_bin_progs="$optional_bin_progs dd"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=dir
-  else
-    optional_bin_progs="$optional_bin_progs dir"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=dircolors
-  else
-    optional_bin_progs="$optional_bin_progs dircolors"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=dirname
-  else
-    optional_bin_progs="$optional_bin_progs dirname"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=du
-  else
-    optional_bin_progs="$optional_bin_progs du"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=echo
-  else
-    optional_bin_progs="$optional_bin_progs echo"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=env
-  else
-    optional_bin_progs="$optional_bin_progs env"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=expand
-  else
-    optional_bin_progs="$optional_bin_progs expand"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=expr
-  else
-    optional_bin_progs="$optional_bin_progs expr"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=factor
-  else
-    optional_bin_progs="$optional_bin_progs factor"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=false
-  else
-    optional_bin_progs="$optional_bin_progs false"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=fmt
-  else
-    optional_bin_progs="$optional_bin_progs fmt"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=fold
-  else
-    optional_bin_progs="$optional_bin_progs fold"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=ginstall
-  else
-    optional_bin_progs="$optional_bin_progs ginstall"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=groups
-  else
-    optional_bin_progs="$optional_bin_progs groups"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=head
-  else
-    optional_bin_progs="$optional_bin_progs head"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=id
-  else
-    optional_bin_progs="$optional_bin_progs id"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=join
-  else
-    optional_bin_progs="$optional_bin_progs join"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=kill
-  else
-    optional_bin_progs="$optional_bin_progs kill"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=link
-  else
-    optional_bin_progs="$optional_bin_progs link"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=ln
-  else
-    optional_bin_progs="$optional_bin_progs ln"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=logname
-  else
-    optional_bin_progs="$optional_bin_progs logname"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=ls
-  else
-    optional_bin_progs="$optional_bin_progs ls"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=md5sum
-  else
-    optional_bin_progs="$optional_bin_progs md5sum"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=mkdir
-  else
-    optional_bin_progs="$optional_bin_progs mkdir"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=mkfifo
-  else
-    optional_bin_progs="$optional_bin_progs mkfifo"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=mknod
-  else
-    optional_bin_progs="$optional_bin_progs mknod"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=mktemp
-  else
-    optional_bin_progs="$optional_bin_progs mktemp"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=mv
-  else
-    optional_bin_progs="$optional_bin_progs mv"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=nl
-  else
-    optional_bin_progs="$optional_bin_progs nl"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=nproc
-  else
-    optional_bin_progs="$optional_bin_progs nproc"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=nohup
-  else
-    optional_bin_progs="$optional_bin_progs nohup"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=numfmt
-  else
-    optional_bin_progs="$optional_bin_progs numfmt"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=od
-  else
-    optional_bin_progs="$optional_bin_progs od"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=paste
-  else
-    optional_bin_progs="$optional_bin_progs paste"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=pathchk
-  else
-    optional_bin_progs="$optional_bin_progs pathchk"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=pr
-  else
-    optional_bin_progs="$optional_bin_progs pr"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=printenv
-  else
-    optional_bin_progs="$optional_bin_progs printenv"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=printf
-  else
-    optional_bin_progs="$optional_bin_progs printf"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=ptx
-  else
-    optional_bin_progs="$optional_bin_progs ptx"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=pwd
-  else
-    optional_bin_progs="$optional_bin_progs pwd"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=readlink
-  else
-    optional_bin_progs="$optional_bin_progs readlink"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=realpath
-  else
-    optional_bin_progs="$optional_bin_progs realpath"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=rm
-  else
-    optional_bin_progs="$optional_bin_progs rm"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=rmdir
-  else
-    optional_bin_progs="$optional_bin_progs rmdir"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=runcon
-  else
-    optional_bin_progs="$optional_bin_progs runcon"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=seq
-  else
-    optional_bin_progs="$optional_bin_progs seq"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=sha1sum
-  else
-    optional_bin_progs="$optional_bin_progs sha1sum"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=sha224sum
-  else
-    optional_bin_progs="$optional_bin_progs sha224sum"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=sha256sum
-  else
-    optional_bin_progs="$optional_bin_progs sha256sum"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=sha384sum
-  else
-    optional_bin_progs="$optional_bin_progs sha384sum"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=sha512sum
-  else
-    optional_bin_progs="$optional_bin_progs sha512sum"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=shred
-  else
-    optional_bin_progs="$optional_bin_progs shred"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=shuf
-  else
-    optional_bin_progs="$optional_bin_progs shuf"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=sleep
-  else
-    optional_bin_progs="$optional_bin_progs sleep"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=sort
-  else
-    optional_bin_progs="$optional_bin_progs sort"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=split
-  else
-    optional_bin_progs="$optional_bin_progs split"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=stat
-  else
-    optional_bin_progs="$optional_bin_progs stat"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=sum
-  else
-    optional_bin_progs="$optional_bin_progs sum"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=sync
-  else
-    optional_bin_progs="$optional_bin_progs sync"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=tac
-  else
-    optional_bin_progs="$optional_bin_progs tac"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=tail
-  else
-    optional_bin_progs="$optional_bin_progs tail"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=tee
-  else
-    optional_bin_progs="$optional_bin_progs tee"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=test
-  else
-    optional_bin_progs="$optional_bin_progs test"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=timeout
-  else
-    optional_bin_progs="$optional_bin_progs timeout"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=touch
-  else
-    optional_bin_progs="$optional_bin_progs touch"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=tr
-  else
-    optional_bin_progs="$optional_bin_progs tr"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=true
-  else
-    optional_bin_progs="$optional_bin_progs true"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=truncate
-  else
-    optional_bin_progs="$optional_bin_progs truncate"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=tsort
-  else
-    optional_bin_progs="$optional_bin_progs tsort"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=tty
-  else
-    optional_bin_progs="$optional_bin_progs tty"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=uname
-  else
-    optional_bin_progs="$optional_bin_progs uname"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=unexpand
-  else
-    optional_bin_progs="$optional_bin_progs unexpand"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=uniq
-  else
-    optional_bin_progs="$optional_bin_progs uniq"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=unlink
-  else
-    optional_bin_progs="$optional_bin_progs unlink"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=vdir
-  else
-    optional_bin_progs="$optional_bin_progs vdir"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=wc
-  else
-    optional_bin_progs="$optional_bin_progs wc"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=whoami
-  else
-    optional_bin_progs="$optional_bin_progs whoami"
-  fi
-}
-{
-  if test -z "$optional_bin_progs"; then
-    optional_bin_progs=yes
-  else
-    optional_bin_progs="$optional_bin_progs yes"
+    optional_bin_progs="$optional_bin_progs echox"
   fi
 }
 no_install_progs_default='arch coreutils hostname'
@@ -65473,7 +64538,7 @@ $as_echo "$gt_cv_locale_fr" >&6; }
 
 
 
-ac_config_files="$ac_config_files Makefile po/Makefile.in gnulib-tests/Makefile"
+ac_config_files="$ac_config_files Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -66388,8 +65453,6 @@ do
     "$GNUmakefile") CONFIG_LINKS="$CONFIG_LINKS $GNUmakefile:$GNUmakefile" ;;
     "po-directories") CONFIG_COMMANDS="$CONFIG_COMMANDS po-directories" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "po/Makefile.in") CONFIG_FILES="$CONFIG_FILES po/Makefile.in" ;;
-    "gnulib-tests/Makefile") CONFIG_FILES="$CONFIG_FILES gnulib-tests/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
@@ -67262,3 +66325,5 @@ if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
 $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
+#  po/Makefile.in
+#  gnulib-tests/Makefile

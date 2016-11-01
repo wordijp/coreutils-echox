@@ -27,7 +27,7 @@ AC_INIT([GNU coreutils],
         m4_esyscmd([build-aux/git-version-gen .tarball-version]),
         [bug-coreutils@gnu.org])
 
-AC_CONFIG_SRCDIR([src/ls.c])
+#AC_CONFIG_SRCDIR([src/ls.c])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([lib/config.h:lib/config.hin])
@@ -246,10 +246,10 @@ AM_CONDITIONAL([SINGLE_BINARY], [test "$gl_single_binary" != no])
 AC_FUNC_FORK
 
 optional_bin_progs=
-AC_CHECK_FUNCS([chroot],
-        gl_ADD_PROG([optional_bin_progs], [chroot]))
-AC_CHECK_FUNCS([gethostid],
-        gl_ADD_PROG([optional_bin_progs], [hostid]))
+#AC_CHECK_FUNCS([chroot],
+#        gl_ADD_PROG([optional_bin_progs], [chroot]))
+#AC_CHECK_FUNCS([gethostid],
+#        gl_ADD_PROG([optional_bin_progs], [hostid]))
 
 gl_WINSIZE_IN_PTEM
 
@@ -301,26 +301,26 @@ if test $utils_cv_localtime_cache = yes; then
 fi
 
 # Assume that if getattrat exists, it's compatible with Solaris 11.
-AC_CHECK_FUNCS([getattrat])
-if test $ac_cv_func_getattrat = yes; then
-  LIB_NVPAIR=-lnvpair
-  AC_SUBST([LIB_NVPAIR])
-fi
+#AC_CHECK_FUNCS([getattrat])
+#if test $ac_cv_func_getattrat = yes; then
+#  LIB_NVPAIR=-lnvpair
+#  AC_SUBST([LIB_NVPAIR])
+#fi
 
 # SCO-ODT-3.0 is reported to need -los to link programs using initgroups
-AC_CHECK_FUNCS([initgroups])
-if test $ac_cv_func_initgroups = no; then
-  AC_CHECK_LIB([os], [initgroups])
-fi
+#AC_CHECK_FUNCS([initgroups])
+#if test $ac_cv_func_initgroups = no; then
+#  AC_CHECK_LIB([os], [initgroups])
+#fi
 
-AC_CHECK_FUNCS([syslog])
-if test $ac_cv_func_syslog = no; then
-  # syslog is not in the default libraries.  See if it's in some other.
-  for lib in bsd socket inet; do
-    AC_CHECK_LIB([$lib], [syslog], [AC_DEFINE([HAVE_SYSLOG], [1], [FIXME])
-      LIBS="$LIBS -l$lib"; break])
-  done
-fi
+#AC_CHECK_FUNCS([syslog])
+#if test $ac_cv_func_syslog = no; then
+#  # syslog is not in the default libraries.  See if it's in some other.
+#  for lib in bsd socket inet; do
+#    AC_CHECK_LIB([$lib], [syslog], [AC_DEFINE([HAVE_SYSLOG], [1], [FIXME])
+#      LIBS="$LIBS -l$lib"; break])
+#  done
+#fi
 
 AC_CACHE_CHECK([for 3-argument setpriority function],
   [utils_cv_func_setpriority],
@@ -332,22 +332,22 @@ AC_CACHE_CHECK([for 3-argument setpriority function],
        [[setpriority (0, 0, 0);]])],
     [utils_cv_func_setpriority=yes],
     [utils_cv_func_setpriority=no])])
-if test $utils_cv_func_setpriority = no; then
-  AC_CHECK_FUNCS([nice])
-fi
-case $utils_cv_func_setpriority,$ac_cv_func_nice in
-*yes*)
-  gl_ADD_PROG([optional_bin_progs], [nice])
-esac
+#if test $utils_cv_func_setpriority = no; then
+#  AC_CHECK_FUNCS([nice])
+#fi
+#case $utils_cv_func_setpriority,$ac_cv_func_nice in
+#*yes*)
+#  gl_ADD_PROG([optional_bin_progs], [nice])
+#esac
 
 AC_DEFUN([coreutils_DUMMY_1],
 [
   AC_REQUIRE([gl_READUTMP])
-  if test $ac_cv_header_utmp_h = yes || test $ac_cv_header_utmpx_h = yes; then
-    gl_ADD_PROG([optional_bin_progs], [who])
-    gl_ADD_PROG([optional_bin_progs], [users])
-    gl_ADD_PROG([optional_bin_progs], [pinky])
-  fi
+#  if test $ac_cv_header_utmp_h = yes || test $ac_cv_header_utmpx_h = yes; then
+#    gl_ADD_PROG([optional_bin_progs], [who])
+#    gl_ADD_PROG([optional_bin_progs], [users])
+#    gl_ADD_PROG([optional_bin_progs], [pinky])
+#  fi
 ])
 coreutils_DUMMY_1
 
@@ -381,13 +381,13 @@ if test -z "$have_ut_host"; then
   fi
 fi
 
-GNULIB_BOOT_TIME([gl_ADD_PROG([optional_bin_progs], [uptime])])
+#GNULIB_BOOT_TIME([gl_ADD_PROG([optional_bin_progs], [uptime])])
 
 AC_SYS_POSIX_TERMIOS()
 gl_HEADER_TIOCGWINSZ_NEEDS_SYS_IOCTL
 
 if test $ac_cv_sys_posix_termios = yes; then
-  gl_ADD_PROG([optional_bin_progs], [stty])
+#  gl_ADD_PROG([optional_bin_progs], [stty])
 
   AC_MSG_CHECKING([whether termios.h needs _XOPEN_SOURCE])
   AC_CACHE_VAL([su_cv_sys_termios_needs_xopen_source],
@@ -456,9 +456,9 @@ AC_CHECK_DECLS([strsignal, sys_siglist, _sys_siglist, __sys_siglist], , ,
 cu_GMP
 
 # Build df only if there's a point to it.
-if test $gl_cv_list_mounted_fs = yes && test $gl_cv_fs_space = yes; then
-  gl_ADD_PROG([optional_bin_progs], [df])
-fi
+#if test $gl_cv_list_mounted_fs = yes && test $gl_cv_fs_space = yes; then
+#  gl_ADD_PROG([optional_bin_progs], [df])
+#fi
 
 # Build stdbuf only if supported
 ac_save_CFLAGS=$CFLAGS
@@ -608,7 +608,7 @@ gt_LOCALE_FR
 
 AC_CONFIG_FILES(
   Makefile
-  po/Makefile.in
-  gnulib-tests/Makefile
   )
 AC_OUTPUT
+#  po/Makefile.in
+#  gnulib-tests/Makefile

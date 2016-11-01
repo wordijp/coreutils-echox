@@ -894,9 +894,6 @@
 /* Define to 1 if you have the `chown' function. */
 #undef HAVE_CHOWN
 
-/* Define to 1 if you have the `chroot' function. */
-#undef HAVE_CHROOT
-
 /* Define to 1 if you have the `chsize' function. */
 #undef HAVE_CHSIZE
 
@@ -1404,9 +1401,6 @@
 /* Define to 1 if you have the `getacl' function. */
 #undef HAVE_GETACL
 
-/* Define to 1 if you have the `getattrat' function. */
-#undef HAVE_GETATTRAT
-
 /* Define to 1 if getcwd works, but with shorter paths than is generally
    tested with the replacement. */
 #undef HAVE_GETCWD_SHORTER
@@ -1437,9 +1431,6 @@
 
 /* Define to 1 if you have the `gethostbyname' function. */
 #undef HAVE_GETHOSTBYNAME
-
-/* Define to 1 if you have the `gethostid' function. */
-#undef HAVE_GETHOSTID
 
 /* Define to 1 if you have the `gethostname' function. */
 #undef HAVE_GETHOSTNAME
@@ -1509,9 +1500,6 @@
 
 /* Define to 1 if you have the `inet_pton' function. */
 #undef HAVE_INET_PTON
-
-/* Define to 1 if you have the `initgroups' function. */
-#undef HAVE_INITGROUPS
 
 /* Define to 1 if the compiler supports one of the keywords 'inline',
    '__inline__', '__inline' and effectively inlines functions marked as such.
@@ -1611,9 +1599,6 @@
 
 /* Define to 1 if you have the `kstat' library (-lkstat). */
 #undef HAVE_LIBKSTAT
-
-/* Define to 1 if you have the `os' library (-los). */
-#undef HAVE_LIBOS
 
 /* Define to 1 if you have the `perfstat' library (-lperfstat). */
 #undef HAVE_LIBPERFSTAT
@@ -1750,9 +1735,6 @@
 
 /* Define to 1 if you have the <nfs/vfs.h> header file. */
 #undef HAVE_NFS_VFS_H
-
-/* Define to 1 if you have the `nice' function. */
-#undef HAVE_NICE
 
 /* Define to 1 if you have the <nlist.h> header file. */
 #undef HAVE_NLIST_H
@@ -2218,9 +2200,6 @@
 /* Define to 1 if you have the `sysinfo' function. */
 #undef HAVE_SYSINFO
 
-/* FIXME */
-#undef HAVE_SYSLOG
-
 /* Define to 1 if you have the <syslog.h> header file. */
 #undef HAVE_SYSLOG_H
 
@@ -2403,7 +2382,7 @@
 /* Define to 1 if you have the `utmpxname' function. */
 #undef HAVE_UTMPXNAME
 
-/* Define to 1 if you have the <utmpx.h> header file. */
+/* FIXME */
 #undef HAVE_UTMPX_H
 
 /* Define to 1 if you have the <utmp.h> header file. */

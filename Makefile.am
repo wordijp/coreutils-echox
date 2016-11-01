@@ -17,45 +17,11 @@
 
 ALL_RECURSIVE_TARGETS =
 
-SUBDIRS = po . gnulib-tests
+SUBDIRS = .
 
-changelog_etc =				\
-  ChangeLog-2005			\
-  ChangeLog-2006			\
-  ChangeLog-2007			\
-  ChangeLog-2008			\
-  build-aux/ChangeLog-2007		\
-  doc/ChangeLog-2007			\
-  lib/ChangeLog-2007			\
-  m4/ChangeLog-2007			\
-  old/fileutils/ChangeLog		\
-  old/fileutils/ChangeLog-1997		\
-  old/fileutils/NEWS			\
-  old/sh-utils/ChangeLog		\
-  old/sh-utils/ChangeLog.0		\
-  old/sh-utils/NEWS			\
-  old/textutils/ChangeLog		\
-  old/textutils/NEWS			\
-  po/ChangeLog-2007
+changelog_etc =
 
-EXTRA_DIST =				\
-  $(changelog_etc)			\
-  .mailmap				\
-  .prev-version				\
-  .version				\
-  .vg-suppressions			\
-  THANKS.in				\
-  THANKS-to-translators			\
-  THANKStt.in				\
-  bootstrap				\
-  bootstrap.conf			\
-  build-aux/gen-lists-of-programs.sh	\
-  build-aux/gen-single-binary.sh	\
-  cfg.mk				\
-  dist-check.mk				\
-  maint.mk				\
-  tests/GNUmakefile			\
-  thanks-gen
+EXTRA_DIST =
 
 gen_progs_lists = $(top_srcdir)/build-aux/gen-lists-of-programs.sh
 gen_single_binary = $(top_srcdir)/build-aux/gen-single-binary.sh
@@ -124,34 +90,35 @@ gen-ChangeLog:
 	      mv $(distdir)/cl-t $(distdir)/ChangeLog; }		\
 	fi
 
-ALL_RECURSIVE_TARGETS += distcheck-hook
-distcheck-hook: check-ls-dircolors
-	$(MAKE) my-distcheck
-	$(MAKE) taint-distcheck
+#ALL_RECURSIVE_TARGETS += distcheck-hook
+#distcheck-hook: check-ls-dircolors
+#	$(MAKE) my-distcheck
+#	$(MAKE) taint-distcheck
 
 DISTCLEANFILES = VERSION
-MAINTAINERCLEANFILES = THANKS-to-translators
-THANKS-to-translators: po/LINGUAS THANKStt.in
-	$(AM_V_GEN)(							\
-	  cat $(srcdir)/THANKStt.in;					\
-	  for lang in `cat $(srcdir)/po/LINGUAS`; do			\
-	    echo http://translationproject.org/team/$$lang.html;	\
-	  done;								\
-	) > $@-tmp && mv $@-tmp $@
+#MAINTAINERCLEANFILES = THANKS-to-translators
+MAINTAINERCLEANFILES =
+#THANKS-to-translators: po/LINGUAS THANKStt.in
+#	$(AM_V_GEN)(							\
+#	  cat $(srcdir)/THANKStt.in;					\
+#	  for lang in `cat $(srcdir)/po/LINGUAS`; do			\
+#	    echo http://translationproject.org/team/$$lang.html;	\
+#	  done;								\
+#	) > $@-tmp && mv $@-tmp $@
 
 # Ensure that the sets of two-letter codes in ls.c and dircolors.c
 # remain in sync.
-.PHONY: check-ls-dircolors
-check-ls-dircolors:
-	$(AM_V_GEN)dc=$$(sed -n '/static.*ls_codes\[/,/};'/p	\
-	    $(srcdir)/src/dircolors.c				\
-	  |sed -n '/^  *"/p'|tr , '\n'|sed 's/^  *//'		\
-	  |sed -n 's/^"\(..\)"/\1/p'|sort -u);			\
-	ls=$$(sed -n '/static.*indicator_name\[/,/};'/\p	\
-	    $(srcdir)/src/ls.c					\
-	  |sed -n '/^  *"/p'|tr , '\n'|sed 's/^  *//'		\
-	  |sed -n 's/^"\(..\)"/\1/p'|sort -u);			\
-	test "$$dc" = "$$ls"
+#.PHONY: check-ls-dircolors
+#check-ls-dircolors:
+#	$(AM_V_GEN)dc=$$(sed -n '/static.*ls_codes\[/,/};'/p	\
+#	    $(srcdir)/src/dircolors.c				\
+#	  |sed -n '/^  *"/p'|tr , '\n'|sed 's/^  *//'		\
+#	  |sed -n 's/^"\(..\)"/\1/p'|sort -u);			\
+#	ls=$$(sed -n '/static.*indicator_name\[/,/};'/\p	\
+#	    $(srcdir)/src/ls.c					\
+#	  |sed -n '/^  *"/p'|tr , '\n'|sed 's/^  *//'		\
+#	  |sed -n 's/^"\(..\)"/\1/p'|sort -u);			\
+#	test "$$dc" = "$$ls"
 
 # Sort in traditional ASCII order, regardless of the current locale;
 # otherwise we may get into trouble with distinct strings that the
@@ -225,6 +192,3 @@ AM_CPPFLAGS = -Ilib -I$(top_srcdir)/lib -Isrc -I$(top_srcdir)/src
 
 include $(top_srcdir)/lib/local.mk
 include $(top_srcdir)/src/local.mk
-include $(top_srcdir)/doc/local.mk
-include $(top_srcdir)/man/local.mk
-include $(top_srcdir)/tests/local.mk
