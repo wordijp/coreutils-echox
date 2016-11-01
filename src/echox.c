@@ -54,6 +54,9 @@ Echo the STRING(s) to standard output.\n\
   -e             enable interpretation of backslash escapes\n\
   -E             disable interpretation of backslash escapes (default)\n")),
              stdout);
+	  fputs (_("\
+  -              use stdin\n\
+"), stdout);
       fputs (HELP_OPTION_DESCRIPTION, stdout);
       fputs (VERSION_OPTION_DESCRIPTION, stdout);
       fputs (_("\
@@ -198,76 +201,110 @@ just_echo:
     {
       while (argc > 0)
         {
-          char const *s = argv[0];
-          unsigned char c;
-
-          while ((c = *s++))
+          if (*argv[0] == '-')
             {
-              if (c == '\\' && *s)
+              char c;
+              char pre_c = 0;
+              while ((c = fgetc(stdin)) != EOF)
                 {
-                  switch (c = *s++)
-                    {
-                    case 'a': c = '\a'; break;
-                    case 'b': c = '\b'; break;
-                    case 'c': return EXIT_SUCCESS;
-                    case 'e': c = '\x1B'; break;
-                    case 'f': c = '\f'; break;
-                    case 'n': c = '\n'; break;
-                    case 'r': c = '\r'; break;
-                    case 't': c = '\t'; break;
-                    case 'v': c = '\v'; break;
-                    case 'x':
-                      {
-                        unsigned char ch = *s;
-                        if (! isxdigit (ch))
-                          goto not_an_escape;
-                        s++;
-                        c = hextobin (ch);
-                        ch = *s;
-                        if (isxdigit (ch))
-                          {
-                            s++;
-                            c = c * 16 + hextobin (ch);
-                          }
-                      }
-                      break;
-                    case '0':
-                      c = 0;
-                      if (! ('0' <= *s && *s <= '7'))
-                        break;
-                      c = *s++;
-                      /* Fall through.  */
-                    case '1': case '2': case '3':
-                    case '4': case '5': case '6': case '7':
-                      c -= '0';
-                      if ('0' <= *s && *s <= '7')
-                        c = c * 8 + (*s++ - '0');
-                      if ('0' <= *s && *s <= '7')
-                        c = c * 8 + (*s++ - '0');
-                      break;
-                    case '\\': break;
-
-                    not_an_escape:
-                    default:  putchar ('\\'); break;
-                    }
+                  putchar(c);
+                  pre_c = c;
                 }
-              putchar (c);
+              argc--;
+              argv++;
+              if (argc > 0 && pre_c != '\n')
+                putchar (' ');
             }
-          argc--;
-          argv++;
-          if (argc > 0)
-            putchar (' ');
+          else
+            {
+              char const *s = argv[0];
+              unsigned char c;
+
+              while ((c = *s++))
+                {
+                  if (c == '\\' && *s)
+                    {
+                      switch (c = *s++)
+                        {
+                        case 'a': c = '\a'; break;
+                        case 'b': c = '\b'; break;
+                        case 'c': return EXIT_SUCCESS;
+                        case 'e': c = '\x1B'; break;
+                        case 'f': c = '\f'; break;
+                        case 'n': c = '\n'; break;
+                        case 'r': c = '\r'; break;
+                        case 't': c = '\t'; break;
+                        case 'v': c = '\v'; break;
+                        case 'x':
+                          {
+                            unsigned char ch = *s;
+                            if (! isxdigit (ch))
+                              goto not_an_escape;
+                            s++;
+                            c = hextobin (ch);
+                            ch = *s;
+                            if (isxdigit (ch))
+                              {
+                                s++;
+                                c = c * 16 + hextobin (ch);
+                              }
+                          }
+                          break;
+                        case '0':
+                          c = 0;
+                          if (! ('0' <= *s && *s <= '7'))
+                            break;
+                          c = *s++;
+                          /* Fall through.  */
+                        case '1': case '2': case '3':
+                        case '4': case '5': case '6': case '7':
+                          c -= '0';
+                          if ('0' <= *s && *s <= '7')
+                            c = c * 8 + (*s++ - '0');
+                          if ('0' <= *s && *s <= '7')
+                            c = c * 8 + (*s++ - '0');
+                          break;
+                        case '\\': break;
+
+                        not_an_escape:
+                        default:  putchar ('\\'); break;
+                        }
+                    }
+                  putchar (c);
+                }
+              argc--;
+              argv++;
+              if (argc > 0)
+                putchar (' ');
+            }
         }
     }
   else
     {
       while (argc > 0)
         {
-          fputs (argv[0], stdout);
-          argc--;
-          argv++;
-          if (argc > 0)
-            putchar (' ');
+          if (*argv[0] == '-')
+            {
+              char c;
+              char pre_c = 0;
+              while ((c = fgetc(stdin)) != EOF)
+                {
+                  putchar(c);
+                  pre_c = c;
+                }
+              argc--;
+              argv++;
+              if (argc > 0 && pre_c != '\n')
+                putchar (' ');
+            }
+          else
+            {
+              fputs (argv[0], stdout);
+              argc--;
+              argv++;
+              if (argc > 0)
+                putchar (' ');
+            }
         }
     }
 
