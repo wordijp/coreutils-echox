@@ -20,11 +20,10 @@
 #include "system.h"
 
 /* The official name of this program (e.g., no 'g' prefix).  */
-#define PROGRAM_NAME "echo"
+#define PROGRAM_NAME "echox"
 
 #define AUTHORS \
-  proper_name ("Brian Fox"), \
-  proper_name ("Chet Ramey")
+  proper_name ("wordijp(original is echo)")
 
 /* If true, interpret backslash escapes by default.  */
 #ifndef DEFAULT_ECHO_TO_XPG
@@ -79,7 +78,13 @@ If -e is in effect, the following sequences are recognized:\n\
   \\xHH    byte with hexadecimal value HH (1 to 2 digits)\n\
 "), stdout);
       printf (USAGE_BUILTIN_WARNING, PROGRAM_NAME);
-      emit_ancillary_info (PROGRAM_NAME);
+	  fputs (_("\
+\n\
+GNU coreutils online help: <http://www.gnu.org/software/coreutils/>\n\
+Report echox translation bugs to <https://github.com/wordijp/coreutils-echox/issues>\n\
+Original Full documentation at: <http://www.gnu.org/software/coreutils/echo>\n\
+or available locally via: info '(coreutils) echo invocation\n\
+"), stdout);
     }
   exit (status);
 }
